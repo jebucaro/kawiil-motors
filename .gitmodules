@@ -1,0 +1,4 @@
+[submodule "jebucaro/kawiil-motors"]
+	path = jebucaro/kawiil-motors
+	url = git@github.com:jebucaro/kawiil-motors.git
+	branch = main
