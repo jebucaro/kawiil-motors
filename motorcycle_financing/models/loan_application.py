@@ -28,5 +28,5 @@ class LoanApplication(models.Model):
             ('cancel', 'Cancelled'),
         ],
         default='draft',
-    ),
+    )
     notes = fields.Html(string="Notes")
