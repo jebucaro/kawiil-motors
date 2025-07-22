@@ -1,0 +1,23 @@
+<odoo>
+    <!-- Main Application Menu -->
+    <menuitem 
+        id="moto_finance_main_menu" 
+        name="Moto Finance" 
+        sequence="10" 
+        web_icon="motorcycle_financing,static/description/icon.png"/>
+
+    <!-- Top Menu Bar -->
+    <menuitem 
+        id="motorcycle_financing_menu" 
+        name="Motorcycle Financing" 
+        parent="moto_finance_main_menu" 
+        sequence="10"/>
+
+    <!-- Loan Applications Submenu -->
+    <menuitem 
+        id="loan_applications_menu" 
+        name="Loan Applications" 
+        parent="motorcycle_financing_menu" 
+        action="loan_application_action" 
+        sequence="10"/>
+</odoo>
