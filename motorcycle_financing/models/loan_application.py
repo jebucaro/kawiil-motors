@@ -6,6 +6,15 @@ class LoanApplication(models.Model):
     _description = 'Loan Application'
 
     name = fields.Char(string="Application Number", required=True)  # required
+    tag_ids = fields.Many2many(
+        comodel_name='loan.application.tag',
+        string="Tags"
+    )
+    document_ids = fields.One2many(
+        comodel_name='loan.application.document',
+        inverse_name='application_id',
+        string="Documents"
+    )
     currency_id = fields.Many2one(
         comodel_name='res.currency',
         string="Currency",
