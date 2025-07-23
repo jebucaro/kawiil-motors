@@ -1,5 +1,38 @@
 <odoo>
     <data noupdate="1">
+        <!-- Demo Document Types -->
+        <record id="document_type_id" model="loan.application.document.type">
+            <field name="name">ID Document</field>
+        </record>
+        <record id="document_type_income" model="loan.application.document.type">
+            <field name="name">Income Proof</field>
+        </record>
+        <record id="document_type_credit" model="loan.application.document.type">
+            <field name="name">Credit Report</field>
+        </record>
+        <record id="document_type_employment" model="loan.application.document.type">
+            <field name="name">Employment Letter</field>
+        </record>
+
+        <!-- Demo Tags -->
+        <record id="tag_high_priority" model="loan.application.tag">
+            <field name="name">High Priority</field>
+            <field name="color">1</field> <!-- Red -->
+        </record>
+        <record id="tag_first_time_buyer" model="loan.application.tag">
+            <field name="name">First Time Buyer</field>
+            <field name="color">3</field> <!-- Blue -->
+        </record>
+        <record id="tag_premium_customer" model="loan.application.tag">
+            <field name="name">Premium Customer</field>
+            <field name="color">10</field> <!-- Gold -->
+        </record>
+        <record id="tag_quick_approval" model="loan.application.tag">
+            <field name="name">Quick Approval</field>
+            <field name="color">5</field> <!-- Green -->
+        </record>
+
+        <!-- Loan Applications with Tags -->
         <record id="loan_01" model="loan.application" >
             <field name="name">Pedro Ramirez - Ukko 202</field>
             <field name="currency_id" ref="base.USD"/>
@@ -9,6 +42,7 @@
             <field name="loan_term">32</field>
             <field name="state">draft</field>
             <field name="date_application">2023-01-27</field>
+            <field name="tag_ids" eval="[Command.link(ref('tag_first_time_buyer'))]"/>
         </record>
         <record id="loan_02" model="loan.application">
             <field name="name">Cindy Chen - Indra 2024</field>
@@ -19,6 +53,7 @@
             <field name="loan_term">24</field>
             <field name="state">signed</field>
             <field name="date_application" eval="(DateTime.today() - relativedelta(months=5)).strftime('%Y-%m-%d')"/>
+            <field name="tag_ids" eval="[Command.link(ref('tag_premium_customer')), Command.link(ref('tag_quick_approval'))]"/>
         </record>
         <record id="loan_03" model="loan.application">
             <field name="name">Friedrich Keller - Raijin 2024</field>
@@ -29,6 +64,39 @@
             <field name="loan_term">64</field>
             <field name="state">approved</field>
             <field name="date_application" eval="(DateTime.today() - relativedelta(months=2)).strftime('%Y-%m-%d')"/>
+            <field name="tag_ids" eval="[Command.link(ref('tag_high_priority'))]"/>
+        </record>
+
+        <!-- Demo Documents -->
+        <record id="document_01_id" model="loan.application.document">
+            <field name="name">Driver's License</field>
+            <field name="application_id" ref="loan_01"/>
+            <field name="type_id" ref="document_type_id"/>
+            <field name="state">approved</field>
+        </record>
+        <record id="document_01_income" model="loan.application.document">
+            <field name="name">Salary Statement</field>
+            <field name="application_id" ref="loan_01"/>
+            <field name="type_id" ref="document_type_income"/>
+            <field name="state">new</field>
+        </record>
+        <record id="document_02_id" model="loan.application.document">
+            <field name="name">Passport</field>
+            <field name="application_id" ref="loan_02"/>
+            <field name="type_id" ref="document_type_id"/>
+            <field name="state">approved</field>
+        </record>
+        <record id="document_02_credit" model="loan.application.document">
+            <field name="name">Credit Bureau Report</field>
+            <field name="application_id" ref="loan_02"/>
+            <field name="type_id" ref="document_type_credit"/>
+            <field name="state">approved</field>
+        </record>
+        <record id="document_03_employment" model="loan.application.document">
+            <field name="name">Employment Verification Letter</field>
+            <field name="application_id" ref="loan_03"/>
+            <field name="type_id" ref="document_type_employment"/>
+            <field name="state">rejected</field>
         </record>
     </data>
 </odoo>
