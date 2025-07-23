@@ -14,6 +14,7 @@
                 </header>
                 <sheet>
                     <h1><field name="name" widget="text" options="{'line_breaks': False}"/></h1>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>
                         <group>
                             <separator string="Application Info"/>
@@ -33,6 +34,25 @@
                         </group>
                     </group>
                     <notebook>
+                        <page name="documents" string="Documents">
+                            <field name="document_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="type_id"/>
+                                    <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-warning="state == 'new'" decoration-danger="state == 'rejected'"/>
+                                </list>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="type_id"/>
+                                            <field name="attachment"/>
+                                            <field name="state"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
                         <page name="Notes">
                             <field name="notes" placeholder="Write your notes here"/>
                         </page>
@@ -58,6 +78,7 @@
         <field name="arch" type="xml">
             <list multi_edit="1">
                 <field name="name"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-info="state == 'draft'" decoration-warning="state == 'review'" decoration-danger="state == 'rejected'"/>
                 <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
@@ -76,11 +97,13 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
+                <field name="tag_ids"/>
                 <filter name="filter_state_new" string="New" domain="[('state','=','draft')]"/>
                 <filter name="filter_state_approved" string="Offer Approved" domain="[('state','=','approved')]"/>
                 <filter name="filter_date_application" date="date_application" string="Application Date"/>
                 <filter name="groupby_date_application" string="Application Date" context="{'group_by': 'date_application'}"/> 
                 <filter name="groupby_state" string="State" context="{'group_by': 'state'}"/>
+                <filter name="groupby_tags" string="Tags" context="{'group_by': 'tag_ids'}"/>
             </search>
         </field>
     </record>
