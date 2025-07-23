@@ -20,4 +20,27 @@
         parent="motorcycle_financing_menu" 
         action="loan_application_action" 
         sequence="10"/>
+
+    <!-- Settings Submenu -->
+    <menuitem 
+        id="settings_menu" 
+        name="Settings" 
+        parent="moto_finance_main_menu" 
+        sequence="20"/>
+
+    <!-- Loan Application Tags -->
+    <menuitem 
+        id="loan_application_tags_menu" 
+        name="Loan Application Tags" 
+        parent="settings_menu" 
+        action="loan_application_tag_action" 
+        sequence="10"/>
+
+    <!-- Document Types -->
+    <menuitem 
+        id="loan_application_document_types_menu" 
+        name="Document Types" 
+        parent="settings_menu" 
+        action="loan_application_document_type_action" 
+        sequence="20"/>
 </odoo>
