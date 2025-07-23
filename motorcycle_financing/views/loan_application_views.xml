@@ -18,9 +18,9 @@
                         <group>
                             <separator string="Application Info"/>
                             <field name="date_application"/>
-                            <field name="date_approval" attrs="{'invisible': [('state', 'not in', ['approved', 'signed'])]}"/>
-                            <field name="date_rejection" attrs="{'invisible': [('state', '!=', 'rejected')]}"/>
-                            <field name="date_signed" attrs="{'invisible': [('state', '!=', 'signed')]}"/>
+                            <field name="date_approval" invisible="state not in ['approved', 'signed']"/>
+                            <field name="date_rejection" invisible="state != 'rejected'"/>
+                            <field name="date_signed" invisible="state != 'signed'"/>
                         </group>
                         <group>
                             <separator string="Loan Info"/>
@@ -36,7 +36,7 @@
                         <page name="Notes">
                             <field name="notes" placeholder="Write your notes here"/>
                         </page>
-                        <page name="Rejection Details" attrs="{'invisible': [('state', '!=', 'rejected')]}">
+                        <page name="Rejection Details" invisible="state != 'rejected'">
                             <field name="rejection_reason" placeholder="Write rejection reason here"/>
                         </page>
                         <page name="Date Log">
