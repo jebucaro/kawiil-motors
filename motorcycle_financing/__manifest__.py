@@ -5,8 +5,10 @@
 	'category': 'Kawiil/Finance',
 	'author': 'Jonathan Búcaro',
 	'version': '18.0.0.0.1',
-	'depends': [],
+	'depends': ['base'],
 	'data': [],
-	'demo': [],
+	'demo': [
+        'data/loan_demo.xml',
+	],
 	'application': True,
 }
