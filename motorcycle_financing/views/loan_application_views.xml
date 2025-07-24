@@ -10,9 +10,17 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_send" type="object" string="Enviar para Aprobación" class="btn-primary" invisible="state != 'draft'"/>
-                    <button name="action_approve" type="object" string="Aprobar Préstamo" class="btn-success" invisible="state != 'sent'"/>
-                    <button name="action_reject" type="object" string="Rechazar Préstamo" class="btn-danger" invisible="state not in ['sent','approved']"/>
+                    <button name="action_send" type="object" string="Send" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_review" type="object" string="Review" class="oe_highlight" 
+                            invisible="state != 'sent'" groups="motorcycle_financing.group_financing_admin"/>
+                    <button name="action_approve" type="object" string="Approve" class="btn-success" 
+                            invisible="state != 'review'" groups="motorcycle_financing.group_financing_admin"/>
+                    <button name="action_reject" type="object" string="Reject" class="btn-danger" 
+                            invisible="state not in ['sent', 'review']" groups="motorcycle_financing.group_financing_admin"/>
+                    <button name="action_sign" type="object" string="Sign" class="oe_highlight" 
+                            invisible="state != 'approved'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" class="btn-secondary" 
+                            invisible="state == 'draft'" groups="motorcycle_financing.group_financing_admin"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent,review,approved,rejected,signed"/>
                 </header>
                 <sheet>
@@ -21,10 +29,10 @@
                     <group>
                         <group>
                             <separator string="Customer &amp; Sales Information"/>
-                            <field name="partner_id" options="{'no_create': True}"/>
-                            <field name="sale_order_id" domain="[('partner_id', '=', partner_id)]" options="{'no_create': True}"/>
-                            <field name="user_id" options="{'no_create': True}"/>
-                            <field name="product_id" options="{'no_create': True}"/>
+                            <field name="partner_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                            <field name="sale_order_id" domain="[('partner_id', '=', partner_id)]" options="{'no_create': True}" readonly="state != 'draft'"/>
+                            <field name="user_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                            <field name="product_id" options="{'no_create': True}" readonly="state != 'draft'"/>
                         </group>
                         <group>
                             <separator string="Application Info"/>
@@ -37,27 +45,29 @@
                     <group>
                         <group>
                             <separator string="Loan Info"/>
-                            <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="state not in ['draft']"/>
+                            <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="state not in ['draft']"/>
                             <field name="currency_id" readonly="True"/>
-                            <field name="interest_rate" widget="percentage"/>
-                            <field name="loan_term"/>
+                            <field name="interest_rate" widget="percentage" readonly="state not in ['draft']"/>
+                            <field name="loan_term" readonly="state not in ['draft']"/>
                         </group>
                     </group>
                     <notebook>
                         <page name="documents" string="Documents">
-                            <field name="document_ids">
+                            <field name="document_ids" readonly="state not in ['draft', 'sent']">
                                 <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
                                     <field name="name"/>
                                     <field name="type_id"/>
                                     <field name="attachment" widget="binary"/>
-                                    <button name="action_accept" type="object" icon="fa-check" string="Aprobar Documento" invisible="state == 'approved'"/>
-                                    <button name="action_reject" type="object" icon="fa-times" string="Rechazar Documento" invisible="state == 'rejected'"/>
+                                    <button name="action_accept" type="object" icon="fa-check" string="Approve Document" invisible="state == 'approved'"/>
+                                    <button name="action_reject" type="object" icon="fa-times" string="Reject Document" invisible="state == 'rejected'"/>
                                     <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-muted="state == 'new'"/>
                                 </list>
                                 <form>
                                     <sheet>
                                         <group>
+                                            <field name="sequence"/>
                                             <field name="name"/>
                                             <field name="type_id"/>
                                             <field name="attachment" widget="binary"/>
@@ -68,7 +78,7 @@
                             </field>
                         </page>
                         <page name="Notes">
-                            <field name="notes" placeholder="Write your notes here"/>
+                            <field name="notes" placeholder="Write your notes here" readonly="state not in ['draft', 'sent']"/>
                         </page>
                         <page name="Rejection Details" invisible="state != 'rejected'">
                             <field name="rejection_reason" placeholder="Write rejection reason here"/>

@@ -7,6 +7,7 @@ class LoanApplicationTag(models.Model):
     _sql_constraints = [
         ("unique_tag_name", "UNIQUE(name)", "Tag name must be unique."),
     ]
+    _order = 'name asc'
 
     name = fields.Char(string="Tag", required=True)
     color = fields.Integer(string="Color")

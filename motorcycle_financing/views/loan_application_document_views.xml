@@ -1,0 +1,64 @@
+<odoo>
+    <!-- Loan Application Document Views -->
+    <record id="loan_application_document_action" model="ir.actions.act_window">
+        <field name="name">Loan Documents</field>
+        <field name="res_model">loan.application.document</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="loan_application_document_list_view" model="ir.ui.view">
+        <field name="name">loan.application.document.list.view</field>
+        <field name="model">loan.application.document</field>
+        <field name="arch" type="xml">
+            <list editable="top">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="application_id"/>
+                <field name="type_id"/>
+                <field name="attachment" widget="binary"/>
+                <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-muted="state == 'new'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="loan_application_document_form_view" model="ir.ui.view">
+        <field name="name">loan.application.document.form.view</field>
+        <field name="model">loan.application.document</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="name"/>
+                            <field name="application_id"/>
+                            <field name="type_id"/>
+                        </group>
+                        <group>
+                            <field name="attachment" widget="binary"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="loan_application_document_search_view" model="ir.ui.view">
+        <field name="name">loan.application.document.search.view</field>
+        <field name="model">loan.application.document</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="application_id"/>
+                <field name="type_id"/>
+                <filter name="filter_state_new" string="New" domain="[('state','=','new')]"/>
+                <filter name="filter_state_approved" string="Approved" domain="[('state','=','approved')]"/>
+                <filter name="filter_state_rejected" string="Rejected" domain="[('state','=','rejected')]"/>
+                <filter name="groupby_application" string="Application" context="{'group_by': 'application_id'}"/>
+                <filter name="groupby_type" string="Document Type" context="{'group_by': 'type_id'}"/>
+                <filter name="groupby_state" string="State" context="{'group_by': 'state'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>

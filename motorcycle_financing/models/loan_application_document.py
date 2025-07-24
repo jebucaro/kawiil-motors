@@ -20,7 +20,9 @@ class LoanApplicationDocument(models.Model):
             self.state = 'new'
     _name = 'loan.application.document'
     _description = 'Loan Application Document'
+    _order = 'sequence, id'
 
+    sequence = fields.Integer(string="Sequence", default=10)
     name = fields.Char(string="Document", required=True)
     application_id = fields.Many2one(
         comodel_name='loan.application',

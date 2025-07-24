@@ -26,7 +26,8 @@
         id="settings_menu" 
         name="Settings" 
         parent="moto_finance_main_menu" 
-        sequence="20"/>
+        sequence="20"
+        groups="motorcycle_financing.group_financing_admin"/>
 
     <!-- Loan Application Tags -->
     <menuitem 
@@ -43,4 +44,12 @@
         parent="settings_menu" 
         action="loan_application_document_type_action" 
         sequence="20"/>
+
+    <!-- Documents -->
+    <menuitem 
+        id="loan_application_documents_menu" 
+        name="Documents" 
+        parent="settings_menu" 
+        action="loan_application_document_action" 
+        sequence="30"/>
 </odoo>

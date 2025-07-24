@@ -45,6 +45,7 @@ class LoanApplication(models.Model):
         return True
     _name = 'loan.application'
     _description = 'Loan Application'
+    _order = 'date_application desc, id desc'
 
     name = fields.Char(string="Application Number", required=True)
     
@@ -147,3 +148,47 @@ class LoanApplication(models.Model):
         """When sale order changes, update product from first order line"""
         if self.sale_order_id and self.sale_order_id.order_line:
             self.product_id = self.sale_order_id.order_line[0].product_id
+
+    def action_send(self):
+        """Send loan application for review"""
+        for record in self:
+            if record.state == 'draft':
+                record.state = 'sent'
+                record.date_application = fields.Date.today()
+
+    def action_review(self):
+        """Set loan application to review state"""
+        for record in self:
+            if record.state == 'sent':
+                record.state = 'review'
+
+    def action_approve(self):
+        """Approve loan application"""
+        for record in self:
+            if record.state == 'review':
+                record.state = 'approved'
+                record.date_approval = fields.Date.today()
+
+    def action_reject(self):
+        """Reject loan application"""
+        for record in self:
+            if record.state in ['sent', 'review']:
+                record.state = 'rejected'
+                record.date_rejection = fields.Date.today()
+
+    def action_sign(self):
+        """Sign loan application"""
+        for record in self:
+            if record.state == 'approved':
+                record.state = 'signed'
+                record.date_signed = fields.Datetime.now()
+
+    def action_reset_to_draft(self):
+        """Reset loan application to draft"""
+        for record in self:
+            record.state = 'draft'
+            record.date_application = False
+            record.date_approval = False
+            record.date_rejection = False
+            record.date_signed = False
+            record.rejection_reason = False
