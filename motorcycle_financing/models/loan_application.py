@@ -132,6 +132,43 @@ class LoanApplication(models.Model):
     )
     notes = fields.Html(string="Notes", copy=False)
 
+    @api.depends('partner_id', 'product_id')
+    def _compute_display_name(self):
+        """Compute display name as 'Customer Name - Motorcycle Name'"""
+        for rec in self:
+            customer_name = rec.partner_id.name if rec.partner_id else "Unknown Customer"
+            motorcycle_name = rec.product_id.name if rec.product_id else "Unknown Motorcycle"
+            rec.display_name = f'{customer_name} - {motorcycle_name}'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Create loan applications and automatically generate documents for each active document type"""
+        # Create the loan applications first
+        applications = super().create(vals_list)
+        
+        # Get all active document types
+        active_document_types = self.env['loan.application.document.type'].search([('active', '=', True)])
+        
+        # For each created application, create documents for all active types
+        document_vals_list = []
+        for application in applications:
+            sequence = 10  # Start sequence at 10
+            for doc_type in active_document_types:
+                document_vals_list.append({
+                    'name': doc_type.name,
+                    'application_id': application.id,
+                    'type_id': doc_type.id,
+                    'state': 'new',
+                    'sequence': sequence,
+                })
+                sequence += 10  # Increment by 10 for each document
+        
+        # Create all documents in batch
+        if document_vals_list:
+            self.env['loan.application.document'].create(document_vals_list)
+        
+        return applications
+
     @api.depends('sale_order_total', 'down_payment')
     def _compute_loan_amount(self):
         """Compute loan amount as sale order total minus down payment"""
