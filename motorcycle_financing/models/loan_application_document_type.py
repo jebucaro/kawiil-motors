@@ -7,6 +7,7 @@ class LoanApplicationDocumentType(models.Model):
     _sql_constraints = [
         ("unique_document_type_name", "UNIQUE(name)", "Document type name must be unique."),
     ]
+    _order = 'name asc'
 
     name = fields.Char(string="Document Type", required=True)
     active = fields.Boolean(string="Active", default=True)
