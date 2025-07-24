@@ -131,14 +131,10 @@
         <!-- Loan Applications with updated relationships -->
         <record id="loan_01" model="loan.application" >
             <field name="name">Pedro Ramirez - Ukko 202</field>
-            <field name="partner_id" ref="partner_pedro_ramirez"/>
             <field name="sale_order_id" ref="sale_order_pedro"/>
-            <field name="user_id" ref="base.user_admin"/>
             <field name="product_id" ref="product_ukko_202"/>
-            <field name="currency_id" ref="base.USD"/>
             <field name="down_payment">1000</field>
             <field name="interest_rate">0.056</field>
-            <field name="loan_amount">15000</field>
             <field name="loan_term">32</field>
             <field name="state">draft</field>
             <field name="date_application">2023-01-27</field>
@@ -146,14 +142,10 @@
         </record>
         <record id="loan_02" model="loan.application">
             <field name="name">Cindy Chen - Indra 2024</field>
-            <field name="partner_id" ref="partner_cindy_chen"/>
             <field name="sale_order_id" ref="sale_order_cindy"/>
-            <field name="user_id" ref="base.user_admin"/>
             <field name="product_id" ref="product_indra_2024"/>
-            <field name="currency_id" ref="base.USD"/>
             <field name="down_payment">2000</field>
             <field name="interest_rate">0.09</field>
-            <field name="loan_amount">9000</field>
             <field name="loan_term">24</field>
             <field name="state">signed</field>
             <field name="date_application" eval="(DateTime.today() - relativedelta(months=5)).strftime('%Y-%m-%d')"/>
@@ -161,14 +153,10 @@
         </record>
         <record id="loan_03" model="loan.application">
             <field name="name">Maria Garcia - Viento Sport</field>
-            <field name="partner_id" ref="partner_maria_garcia"/>
             <field name="sale_order_id" ref="sale_order_maria"/>
-            <field name="user_id" ref="base.user_admin"/>
             <field name="product_id" ref="product_viento_sport"/>
-            <field name="currency_id" ref="base.USD"/>
             <field name="down_payment">3000</field>
             <field name="interest_rate">0.0548</field>
-            <field name="loan_amount">25000</field>
             <field name="loan_term">64</field>
             <field name="state">approved</field>
             <field name="date_application" eval="(DateTime.today() - relativedelta(months=2)).strftime('%Y-%m-%d')"/>
