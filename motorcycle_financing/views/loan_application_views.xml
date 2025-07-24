@@ -1,4 +1,12 @@
 <odoo>
+    <record id="new_loan_application_action" model="ir.actions.act_window">
+        <field name="name">Loan Applications</field>
+        <field name="res_model">loan.application</field>
+        <field name="view_mode">form,list</field>
+        <field name="domain">[('sale_order_id', '=', active_id)]</field>
+        <field name="context">{'search_default_sale_order_id': active_id, 'default_sale_order_id': active_id}</field>
+    </record>
+
     <record id="loan_application_action" model="ir.actions.act_window">
         <field name="name">Loan Applications</field>
         <field name="res_model">loan.application</field>

@@ -1,51 +1,15 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError, UserError
 
 
 class LoanApplication(models.Model):
-    _sql_constraints = [
-        ("downpayment_non_negative_value", "CHECK(down_payment >= 0)", "The downpayment cannot be negative."),
-    ]
-    @api.constrains('down_payment', 'sale_order_total')
-    def _check_down_payment(self):
-        for rec in self:
-            if rec.down_payment and rec.sale_order_total and rec.down_payment > rec.sale_order_total:
-                from odoo.exceptions import ValidationError
-                raise ValidationError("Downpayment cannot exceed the sale order total.")
-    def action_send(self):
-        """Send application for approval: all documents must be approved."""
-        self.ensure_one()
-        if any(doc.state != 'approved' for doc in self.document_ids):
-            from odoo.exceptions import UserError
-            raise UserError("All documents must be approved before sending the application.")
-        if self.state != 'draft':
-            from odoo.exceptions import UserError
-            raise UserError("Only draft applications can be sent.")
-        self.state = 'sent'
-        self.date_application = fields.Date.context_today(self)
-        return True
-
-    def action_approve(self):
-        """Approve the loan application."""
-        self.ensure_one()
-        if self.state != 'sent':
-            from odoo.exceptions import UserError
-            raise UserError("Only sent applications can be approved.")
-        self.state = 'approved'
-        self.date_approval = fields.Date.context_today(self)
-        return True
-
-    def action_reject(self):
-        """Reject the loan application."""
-        self.ensure_one()
-        if self.state not in ['sent', 'approved']:
-            from odoo.exceptions import UserError
-            raise UserError("Only sent or approved applications can be rejected.")
-        self.state = 'rejected'
-        self.date_rejection = fields.Date.context_today(self)
-        return True
     _name = 'loan.application'
     _description = 'Loan Application'
     _order = 'date_application desc, id desc'
+
+    _sql_constraints = [
+        ("downpayment_non_negative_value", "CHECK(down_payment >= 0)", "The downpayment cannot be negative."),
+    ]
 
     name = fields.Char(string="Application Number", required=True)
     
@@ -132,6 +96,12 @@ class LoanApplication(models.Model):
     )
     notes = fields.Html(string="Notes", copy=False)
 
+    @api.constrains('down_payment', 'sale_order_total')
+    def _check_down_payment(self):
+        for rec in self:
+            if rec.down_payment and rec.sale_order_total and rec.down_payment > rec.sale_order_total:
+                raise ValidationError("Downpayment cannot exceed the sale order total.")
+
     @api.depends('partner_id', 'product_id')
     def _compute_display_name(self):
         """Compute display name as 'Customer Name - Motorcycle Name'"""
@@ -187,11 +157,15 @@ class LoanApplication(models.Model):
             self.product_id = self.sale_order_id.order_line[0].product_id
 
     def action_send(self):
-        """Send loan application for review"""
-        for record in self:
-            if record.state == 'draft':
-                record.state = 'sent'
-                record.date_application = fields.Date.today()
+        """Send application for approval: all documents must be approved."""
+        self.ensure_one()
+        if any(doc.state != 'approved' for doc in self.document_ids):
+            raise UserError("All documents must be approved before sending the application.")
+        if self.state != 'draft':
+            raise UserError("Only draft applications can be sent.")
+        self.state = 'sent'
+        self.date_application = fields.Date.context_today(self)
+        return True
 
     def action_review(self):
         """Set loan application to review state"""
@@ -200,18 +174,22 @@ class LoanApplication(models.Model):
                 record.state = 'review'
 
     def action_approve(self):
-        """Approve loan application"""
-        for record in self:
-            if record.state == 'review':
-                record.state = 'approved'
-                record.date_approval = fields.Date.today()
+        """Approve the loan application."""
+        self.ensure_one()
+        if self.state != 'review':
+            raise UserError("Only applications under review can be approved.")
+        self.state = 'approved'
+        self.date_approval = fields.Date.context_today(self)
+        return True
 
     def action_reject(self):
-        """Reject loan application"""
-        for record in self:
-            if record.state in ['sent', 'review']:
-                record.state = 'rejected'
-                record.date_rejection = fields.Date.today()
+        """Reject the loan application."""
+        self.ensure_one()
+        if self.state not in ['sent', 'review']:
+            raise UserError("Only sent or applications under review can be rejected.")
+        self.state = 'rejected'
+        self.date_rejection = fields.Date.context_today(self)
+        return True
 
     def action_sign(self):
         """Sign loan application"""
