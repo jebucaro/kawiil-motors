@@ -11,7 +11,7 @@
             </field>
             
             <button name="action_confirm" position="after">
-                <button name="action_apply_loan" id="action_apply_loan" string="Apply Loan" class="btn-primary" type="object" invisible="not is_financed" groups="motorcycle_financing.financing_user"/>
+                <button name="action_apply_loan" id="action_apply_loan" string="Apply Loan" class="btn-primary" type="object" invisible="not is_financed" groups="motorcycle_financing.group_financing_user"/>
             </button>
             
             <xpath expr="//field[@name='payment_term_id']" position="after">
@@ -23,7 +23,7 @@
             </xpath>
             
             <xpath expr="//page[@name='order_lines']" position="after">
-                <page string="Loan Applications" name="loan_applications" invisible="not is_financed" groups="motorcycle_financing.financing_user">
+                <page string="Loan Applications" name="loan_applications" invisible="not is_financed" groups="motorcycle_financing.group_financing_user">
                     <field name="loan_application_ids"/>
                 </page>
             </xpath>
