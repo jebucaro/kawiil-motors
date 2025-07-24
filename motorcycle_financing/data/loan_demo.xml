@@ -31,7 +31,7 @@
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="list_price">16000.00</field>
             <field name="standard_price">12000.00</field>
-            <field name="detailed_type">consu</field>
+            <field name="type">consu</field>
             <field name="sale_ok">True</field>
             <field name="purchase_ok">True</field>
         </record>
@@ -41,7 +41,7 @@
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="list_price">22000.00</field>
             <field name="standard_price">18000.00</field>
-            <field name="detailed_type">consu</field>
+            <field name="type">consu</field>
             <field name="sale_ok">True</field>
             <field name="purchase_ok">True</field>
         </record>
@@ -51,7 +51,7 @@
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="list_price">28000.00</field>
             <field name="standard_price">22000.00</field>
-            <field name="detailed_type">consu</field>
+            <field name="type">consu</field>
             <field name="sale_ok">True</field>
             <field name="purchase_ok">True</field>
         </record>
@@ -134,7 +134,7 @@
             <field name="partner_id" ref="partner_pedro_ramirez"/>
             <field name="sale_order_id" ref="sale_order_pedro"/>
             <field name="user_id" ref="base.user_admin"/>
-            <field name="product_template_id" ref="product_ukko_202"/>
+            <field name="product_id" ref="product_ukko_202"/>
             <field name="currency_id" ref="base.USD"/>
             <field name="down_payment">1000</field>
             <field name="interest_rate">0.056</field>
@@ -149,7 +149,7 @@
             <field name="partner_id" ref="partner_cindy_chen"/>
             <field name="sale_order_id" ref="sale_order_cindy"/>
             <field name="user_id" ref="base.user_admin"/>
-            <field name="product_template_id" ref="product_indra_2024"/>
+            <field name="product_id" ref="product_indra_2024"/>
             <field name="currency_id" ref="base.USD"/>
             <field name="down_payment">2000</field>
             <field name="interest_rate">0.09</field>
@@ -164,7 +164,7 @@
             <field name="partner_id" ref="partner_maria_garcia"/>
             <field name="sale_order_id" ref="sale_order_maria"/>
             <field name="user_id" ref="base.user_admin"/>
-            <field name="product_template_id" ref="product_viento_sport"/>
+            <field name="product_id" ref="product_viento_sport"/>
             <field name="currency_id" ref="base.USD"/>
             <field name="down_payment">3000</field>
             <field name="interest_rate">0.0548</field>

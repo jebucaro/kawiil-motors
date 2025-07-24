@@ -25,7 +25,7 @@ class LoanApplication(models.Model):
         help="Salesperson responsible for this loan application",
         default=lambda self: self.env.user
     )
-    product_template_id = fields.Many2one(
+    product_id = fields.Many2one(
         comodel_name='product.product',
         string="Product",
         help="Product to be financed through this loan"
@@ -77,7 +77,7 @@ class LoanApplication(models.Model):
             self.partner_id = self.sale_order_id.partner_id
             # Set product from the first order line if available
             if self.sale_order_id.order_line:
-                self.product_template_id = self.sale_order_id.order_line[0].product_id
+                self.product_id = self.sale_order_id.order_line[0].product_id
     
     @api.onchange('partner_id')
     def _onchange_partner_id(self):

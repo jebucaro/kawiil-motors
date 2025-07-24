@@ -21,7 +21,7 @@
                             <field name="partner_id" options="{'no_create': True}"/>
                             <field name="sale_order_id" domain="[('partner_id', '=', partner_id)]" options="{'no_create': True}"/>
                             <field name="user_id" options="{'no_create': True}"/>
-                            <field name="product_template_id" options="{'no_create': True}"/>
+                            <field name="product_id" options="{'no_create': True}"/>
                         </group>
                         <group>
                             <separator string="Application Info"/>
@@ -89,7 +89,7 @@
                 <field name="partner_id"/>
                 <field name="sale_order_id" optional="hide"/>
                 <field name="user_id"/>
-                <field name="product_template_id" optional="hide"/>
+                <field name="product_id" optional="hide"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-info="state == 'draft'" decoration-warning="state == 'review'" decoration-danger="state == 'rejected'"/>
                 <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
@@ -112,7 +112,7 @@
                 <field name="partner_id"/>
                 <field name="sale_order_id"/>
                 <field name="user_id"/>
-                <field name="product_template_id"/>
+                <field name="product_id"/>
                 <field name="tag_ids"/>
                 <filter name="filter_state_new" string="New" domain="[('state','=','draft')]"/>
                 <filter name="filter_state_approved" string="Offer Approved" domain="[('state','=','approved')]"/>
@@ -121,7 +121,7 @@
                 <filter name="groupby_state" string="State" context="{'group_by': 'state'}"/>
                 <filter name="groupby_partner" string="Customer" context="{'group_by': 'partner_id'}"/>
                 <filter name="groupby_user" string="Salesperson" context="{'group_by': 'user_id'}"/>
-                <filter name="groupby_product" string="Product" context="{'group_by': 'product_template_id'}"/>
+                <filter name="groupby_product" string="Product" context="{'group_by': 'product_id'}"/>
                 <filter name="groupby_tags" string="Tags" context="{'group_by': 'tag_ids'}"/>
             </search>
         </field>
