@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,review,approved,signed"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,review,approved,rejected,signed"/>
                 </header>
                 <sheet>
                     <h1><field name="name" widget="text" options="{'line_breaks': False}"/></h1>
@@ -34,7 +34,6 @@
                     <group>
                         <group>
                             <separator string="Loan Info"/>
-                            <field name="sale_order_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="currency_id" readonly="True"/>
@@ -45,17 +44,18 @@
                     <notebook>
                         <page name="documents" string="Documents">
                             <field name="document_ids">
-                                <list>
+                                <list editable="bottom">
                                     <field name="name"/>
                                     <field name="type_id"/>
-                                    <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-warning="state == 'new'" decoration-danger="state == 'rejected'"/>
+                                    <field name="attachment" widget="binary"/>
+                                    <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-muted="state == 'new'"/>
                                 </list>
                                 <form>
                                     <sheet>
                                         <group>
                                             <field name="name"/>
                                             <field name="type_id"/>
-                                            <field name="attachment"/>
+                                            <field name="attachment" widget="binary"/>
                                             <field name="state"/>
                                         </group>
                                     </sheet>
@@ -93,16 +93,15 @@
                 <field name="product_id" optional="hide"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-info="state == 'draft'" decoration-warning="state == 'review'" decoration-danger="state == 'rejected'"/>
-                <field name="sale_order_total" widget="monetary" options="{'currency_field': 'currency_id'}" optional="hide"/>
                 <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                <field name="currency_id" column_invisible="1"/>
-                <field name="interest_rate"/>
+                <field name="interest_rate" widget="percentage"/>
                 <field name="loan_term"/>
                 <field name="date_application"/>
                 <field name="date_approval" optional="hide"/>
                 <field name="date_rejection" optional="hide"/>
                 <field name="date_signed" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
             </list>
         </field>
     </record>
@@ -117,9 +116,6 @@
                 <field name="user_id"/>
                 <field name="product_id"/>
                 <field name="tag_ids"/>
-                <field name="sale_order_total"/>
-                <field name="loan_amount"/>
-                <field name="down_payment"/>
                 <filter name="filter_state_new" string="New" domain="[('state','=','draft')]"/>
                 <filter name="filter_state_approved" string="Offer Approved" domain="[('state','=','approved')]"/>
                 <filter name="filter_date_application" date="date_application" string="Application Date"/>
