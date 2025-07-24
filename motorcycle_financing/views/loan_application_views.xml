@@ -10,6 +10,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_send" type="object" string="Enviar para Aprobación" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" type="object" string="Aprobar Préstamo" class="btn-success" invisible="state != 'sent'"/>
+                    <button name="action_reject" type="object" string="Rechazar Préstamo" class="btn-danger" invisible="state not in ['sent','approved']"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent,review,approved,rejected,signed"/>
                 </header>
                 <sheet>
@@ -48,6 +51,8 @@
                                     <field name="name"/>
                                     <field name="type_id"/>
                                     <field name="attachment" widget="binary"/>
+                                    <button name="action_accept" type="object" icon="fa-check" string="Aprobar Documento" invisible="state == 'approved'"/>
+                                    <button name="action_reject" type="object" icon="fa-times" string="Rechazar Documento" invisible="state == 'rejected'"/>
                                     <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-muted="state == 'new'"/>
                                 </list>
                                 <form>
