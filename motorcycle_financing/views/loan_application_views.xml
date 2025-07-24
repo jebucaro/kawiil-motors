@@ -34,6 +34,7 @@
                     <group>
                         <group>
                             <separator string="Loan Info"/>
+                            <field name="sale_order_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="currency_id" readonly="True"/>
@@ -92,8 +93,10 @@
                 <field name="product_id" optional="hide"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-info="state == 'draft'" decoration-warning="state == 'review'" decoration-danger="state == 'rejected'"/>
+                <field name="sale_order_total" widget="monetary" options="{'currency_field': 'currency_id'}" optional="hide"/>
                 <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" column_invisible="1"/>
                 <field name="interest_rate"/>
                 <field name="loan_term"/>
                 <field name="date_application"/>
@@ -114,6 +117,9 @@
                 <field name="user_id"/>
                 <field name="product_id"/>
                 <field name="tag_ids"/>
+                <field name="sale_order_total"/>
+                <field name="loan_amount"/>
+                <field name="down_payment"/>
                 <filter name="filter_state_new" string="New" domain="[('state','=','draft')]"/>
                 <filter name="filter_state_approved" string="Offer Approved" domain="[('state','=','approved')]"/>
                 <filter name="filter_date_application" date="date_application" string="Application Date"/>
