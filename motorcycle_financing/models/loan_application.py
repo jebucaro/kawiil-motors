@@ -5,6 +5,7 @@ from odoo.exceptions import ValidationError, UserError
 class LoanApplication(models.Model):
     _name = 'loan.application'
     _description = 'Loan Application'
+    _inherit = ['mail.thread', 'mail.activity.mixin']  # Inherit Mixin Models to add chatter features.
     _order = 'date_application desc, id desc'
 
     _sql_constraints = [
@@ -92,7 +93,8 @@ class LoanApplication(models.Model):
             ('cancel', 'Canceled'),
         ],
         default='draft',
-        copy=False
+        copy=False,
+        tracking=True  # Add tracking attribute to track in Chatter.
     )
     notes = fields.Html(string="Notes", copy=False)
 

@@ -101,6 +101,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/><!-- Add Chatter Element to View -->
             </form>
         </field>
     </record>
