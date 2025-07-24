@@ -1,5 +1,101 @@
 <odoo>
     <data noupdate="1">
+        <!-- Demo Partners (Customers) -->
+        <record id="partner_pedro_ramirez" model="res.partner">
+            <field name="name">Pedro Ramirez</field>
+            <field name="email">pedro.ramirez@example.com</field>
+            <field name="phone">+1-555-0123</field>
+            <field name="is_company">False</field>
+            <field name="customer_rank">1</field>
+        </record>
+        
+        <record id="partner_cindy_chen" model="res.partner">
+            <field name="name">Cindy Chen</field>
+            <field name="email">cindy.chen@example.com</field>
+            <field name="phone">+1-555-0456</field>
+            <field name="is_company">False</field>
+            <field name="customer_rank">1</field>
+        </record>
+
+        <record id="partner_maria_garcia" model="res.partner">
+            <field name="name">Maria Garcia</field>
+            <field name="email">maria.garcia@example.com</field>
+            <field name="phone">+1-555-0789</field>
+            <field name="is_company">False</field>
+            <field name="customer_rank">1</field>
+        </record>
+
+        <!-- Demo Products (Motorcycles) -->
+        <record id="product_ukko_202" model="product.product">
+            <field name="name">Ukko 202 Motorcycle</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">16000.00</field>
+            <field name="standard_price">12000.00</field>
+            <field name="type">consu</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+        </record>
+
+        <record id="product_indra_2024" model="product.product">
+            <field name="name">Indra 2024 Motorcycle</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">22000.00</field>
+            <field name="standard_price">18000.00</field>
+            <field name="type">consu</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+        </record>
+
+        <record id="product_viento_sport" model="product.product">
+            <field name="name">Viento Sport Motorcycle</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">28000.00</field>
+            <field name="standard_price">22000.00</field>
+            <field name="type">consu</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">True</field>
+        </record>
+
+        <!-- Demo Sale Orders -->
+        <record id="sale_order_pedro" model="sale.order">
+            <field name="partner_id" ref="partner_pedro_ramirez"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="state">draft</field>
+        </record>
+
+        <record id="sale_order_line_pedro" model="sale.order.line">
+            <field name="order_id" ref="sale_order_pedro"/>
+            <field name="product_id" ref="product_ukko_202"/>
+            <field name="product_uom_qty">1</field>
+            <field name="price_unit">16000.00</field>
+        </record>
+
+        <record id="sale_order_cindy" model="sale.order">
+            <field name="partner_id" ref="partner_cindy_chen"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="state">draft</field>
+        </record>
+
+        <record id="sale_order_line_cindy" model="sale.order.line">
+            <field name="order_id" ref="sale_order_cindy"/>
+            <field name="product_id" ref="product_indra_2024"/>
+            <field name="product_uom_qty">1</field>
+            <field name="price_unit">22000.00</field>
+        </record>
+
+        <record id="sale_order_maria" model="sale.order">
+            <field name="partner_id" ref="partner_maria_garcia"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="state">draft</field>
+        </record>
+
+        <record id="sale_order_line_maria" model="sale.order.line">
+            <field name="order_id" ref="sale_order_maria"/>
+            <field name="product_id" ref="product_viento_sport"/>
+            <field name="product_uom_qty">1</field>
+            <field name="price_unit">28000.00</field>
+        </record>
+
         <!-- Demo Document Types -->
         <record id="document_type_id" model="loan.application.document.type">
             <field name="name">ID Document</field>
@@ -32,9 +128,13 @@
             <field name="color">5</field> <!-- Green -->
         </record>
 
-        <!-- Loan Applications with Tags -->
+        <!-- Loan Applications with updated relationships -->
         <record id="loan_01" model="loan.application" >
             <field name="name">Pedro Ramirez - Ukko 202</field>
+            <field name="partner_id" ref="partner_pedro_ramirez"/>
+            <field name="sale_order_id" ref="sale_order_pedro"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="product_id" ref="product_ukko_202"/>
             <field name="currency_id" ref="base.USD"/>
             <field name="down_payment">1000</field>
             <field name="interest_rate">0.056</field>
@@ -46,6 +146,10 @@
         </record>
         <record id="loan_02" model="loan.application">
             <field name="name">Cindy Chen - Indra 2024</field>
+            <field name="partner_id" ref="partner_cindy_chen"/>
+            <field name="sale_order_id" ref="sale_order_cindy"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="product_id" ref="product_indra_2024"/>
             <field name="currency_id" ref="base.USD"/>
             <field name="down_payment">2000</field>
             <field name="interest_rate">0.09</field>
@@ -56,7 +160,11 @@
             <field name="tag_ids" eval="[Command.link(ref('tag_premium_customer')), Command.link(ref('tag_quick_approval'))]"/>
         </record>
         <record id="loan_03" model="loan.application">
-            <field name="name">Friedrich Keller - Raijin 2024</field>
+            <field name="name">Maria Garcia - Viento Sport</field>
+            <field name="partner_id" ref="partner_maria_garcia"/>
+            <field name="sale_order_id" ref="sale_order_maria"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="product_id" ref="product_viento_sport"/>
             <field name="currency_id" ref="base.USD"/>
             <field name="down_payment">3000</field>
             <field name="interest_rate">0.0548</field>

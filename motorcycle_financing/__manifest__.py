@@ -5,7 +5,7 @@
 	'category': 'Kawiil/Finance',
 	'author': 'Jonathan Búcaro',
 	'version': '18.0.0.0.1',
-	'depends': ['base', 'web'],
+	'depends': ['base', 'web', 'sale'],
 	'data': [
 		'security/motorcycle_financing_groups.xml',
 		'security/ir.model.access.csv',
