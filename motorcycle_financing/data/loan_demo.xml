@@ -31,7 +31,7 @@
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="list_price">16000.00</field>
             <field name="standard_price">12000.00</field>
-            <field name="type">product</field>
+            <field name="detailed_type">consu</field>
             <field name="sale_ok">True</field>
             <field name="purchase_ok">True</field>
         </record>
@@ -41,7 +41,7 @@
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="list_price">22000.00</field>
             <field name="standard_price">18000.00</field>
-            <field name="type">product</field>
+            <field name="detailed_type">consu</field>
             <field name="sale_ok">True</field>
             <field name="purchase_ok">True</field>
         </record>
@@ -51,7 +51,7 @@
             <field name="categ_id" ref="product.product_category_all"/>
             <field name="list_price">28000.00</field>
             <field name="standard_price">22000.00</field>
-            <field name="type">product</field>
+            <field name="detailed_type">consu</field>
             <field name="sale_ok">True</field>
             <field name="purchase_ok">True</field>
         </record>
