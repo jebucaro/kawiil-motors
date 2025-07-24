@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class LoanApplicationDocument(models.Model):
@@ -14,7 +14,7 @@ class LoanApplicationDocument(models.Model):
         self.state = 'rejected'
         return True
 
-    @fields.onchange('attachment')
+    @api.onchange('attachment')
     def _onchange_attachment(self):
         if self.attachment:
             self.state = 'new'
