@@ -17,12 +17,21 @@
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>
                         <group>
+                            <separator string="Customer &amp; Sales Information"/>
+                            <field name="partner_id" options="{'no_create': True}"/>
+                            <field name="sale_order_id" domain="[('partner_id', '=', partner_id)]" options="{'no_create': True}"/>
+                            <field name="user_id" options="{'no_create': True}"/>
+                            <field name="product_template_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
                             <separator string="Application Info"/>
                             <field name="date_application"/>
                             <field name="date_approval" invisible="state not in ['approved', 'signed']"/>
                             <field name="date_rejection" invisible="state != 'rejected'"/>
                             <field name="date_signed" invisible="state != 'signed'"/>
                         </group>
+                    </group>
+                    <group>
                         <group>
                             <separator string="Loan Info"/>
                             <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
@@ -30,7 +39,6 @@
                             <field name="currency_id" readonly="True"/>
                             <field name="interest_rate" widget="percentage"/>
                             <field name="loan_term"/>
-                        
                         </group>
                     </group>
                     <notebook>
@@ -78,6 +86,10 @@
         <field name="arch" type="xml">
             <list multi_edit="1">
                 <field name="name"/>
+                <field name="partner_id"/>
+                <field name="sale_order_id" optional="hide"/>
+                <field name="user_id"/>
+                <field name="product_template_id" optional="hide"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-info="state == 'draft'" decoration-warning="state == 'review'" decoration-danger="state == 'rejected'"/>
                 <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
@@ -97,12 +109,19 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
+                <field name="partner_id"/>
+                <field name="sale_order_id"/>
+                <field name="user_id"/>
+                <field name="product_template_id"/>
                 <field name="tag_ids"/>
                 <filter name="filter_state_new" string="New" domain="[('state','=','draft')]"/>
                 <filter name="filter_state_approved" string="Offer Approved" domain="[('state','=','approved')]"/>
                 <filter name="filter_date_application" date="date_application" string="Application Date"/>
                 <filter name="groupby_date_application" string="Application Date" context="{'group_by': 'date_application'}"/> 
                 <filter name="groupby_state" string="State" context="{'group_by': 'state'}"/>
+                <filter name="groupby_partner" string="Customer" context="{'group_by': 'partner_id'}"/>
+                <filter name="groupby_user" string="Salesperson" context="{'group_by': 'user_id'}"/>
+                <filter name="groupby_product" string="Product" context="{'group_by': 'product_template_id'}"/>
                 <filter name="groupby_tags" string="Tags" context="{'group_by': 'tag_ids'}"/>
             </search>
         </field>
