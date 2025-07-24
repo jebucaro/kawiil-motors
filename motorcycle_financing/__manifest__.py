@@ -13,6 +13,7 @@
 		'views/loan_application_views.xml',
 		'views/loan_application_tag_views.xml',
 		'views/loan_application_document_type_views.xml',
+		'views/loan_application_document_views.xml',
 		'views/motorcycle_financing_menu.xml',
 	],
 	'demo': [
