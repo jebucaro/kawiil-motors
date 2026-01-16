@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_loan_application_admin,Loan Application Admin Access,model_loan_application,group_financing_admin,1,1,1,1
+access_loan_application_user,Loan Application User Access,model_loan_application,group_financing_user,1,1,1,0
+access_loan_application_tag_admin,Loan Application Tag Admin Access,model_loan_application_tag,group_financing_admin,1,1,1,1
+access_loan_application_tag_user,Loan Application Tag User Access,model_loan_application_tag,group_financing_user,1,0,0,0
+access_loan_application_document_user,Loan Application Document User Access,model_loan_application_document,group_financing_user,1,1,1,1
+access_loan_application_document_admin,Loan Application Document Admin Access,model_loan_application_document,group_financing_admin,1,1,1,1
+access_loan_application_document_type_admin,Loan Application Document Type Admin Access,model_loan_application_document_type,group_financing_admin,1,1,1,1
+access_loan_application_document_type_user,Loan Application Document Type User Access,model_loan_application_document_type,group_financing_user,1,0,0,0

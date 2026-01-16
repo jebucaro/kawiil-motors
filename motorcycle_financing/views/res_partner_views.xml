@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_partner_form_loan_applications" model="ir.ui.view">
+        <field name="name">res.partner.form.loan.applications</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Add smart button to display loan applications count and navigate to them -->
+            <div class="oe_button_box" position="inside">
+                <button class="oe_stat_button" 
+                        type="object" 
+                        name="action_view_applications" 
+                        icon="fa-credit-card"
+                        invisible="application_count == 0">
+                    <field string="Loan Applications" 
+                           name="application_count" 
+                           widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

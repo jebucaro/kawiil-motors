@@ -1,0 +1,155 @@
+<odoo>
+    <record id="new_loan_application_action" model="ir.actions.act_window">
+        <field name="name">Loan Applications</field>
+        <field name="res_model">loan.application</field>
+        <field name="view_mode">form,list</field>
+        <field name="domain">[('sale_order_id', '=', active_id)]</field>
+        <field name="context">{'search_default_sale_order_id': active_id, 'default_sale_order_id': active_id}</field>
+    </record>
+
+    <record id="loan_application_action" model="ir.actions.act_window">
+        <field name="name">Loan Applications</field>
+        <field name="res_model">loan.application</field>
+        <field name="view_mode">list,form</field>
+    </record>
+     <record id="loan_application_form_view" model="ir.ui.view">
+        <field name="name">loan.application.form.view</field>
+        <field name="model">loan.application</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send" type="object" string="Send" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_review" type="object" string="Review" class="oe_highlight" 
+                            invisible="state != 'sent'" groups="motorcycle_financing.group_financing_admin"/>
+                    <button name="action_approve" type="object" string="Approve" class="btn-success" 
+                            invisible="state != 'review'" groups="motorcycle_financing.group_financing_admin"/>
+                    <button name="action_reject" type="object" string="Reject" class="btn-danger" 
+                            invisible="state not in ['sent', 'review']" groups="motorcycle_financing.group_financing_admin"/>
+                    <button name="action_sign" type="object" string="Sign" class="oe_highlight" 
+                            invisible="state != 'approved'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" class="btn-secondary" 
+                            invisible="state == 'draft'" groups="motorcycle_financing.group_financing_admin"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,review,approved,rejected,signed"/>
+                </header>
+                <sheet>
+                    <h1><field name="name" widget="text" options="{'line_breaks': False}"/></h1>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <group>
+                        <group>
+                            <separator string="Customer &amp; Sales Information"/>
+                            <field name="partner_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                            <field name="sale_order_id" domain="[('partner_id', '=', partner_id)]" options="{'no_create': True}" readonly="state != 'draft'"/>
+                            <field name="user_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                            <field name="product_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <separator string="Application Info"/>
+                            <field name="date_application"/>
+                            <field name="date_approval" invisible="state not in ['approved', 'signed']"/>
+                            <field name="date_rejection" invisible="state != 'rejected'"/>
+                            <field name="date_signed" invisible="state != 'signed'"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <separator string="Loan Info"/>
+                            <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="state not in ['draft']"/>
+                            <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="state not in ['draft']"/>
+                            <field name="currency_id" readonly="True"/>
+                            <field name="interest_rate" widget="percentage" readonly="state not in ['draft']"/>
+                            <field name="loan_term" readonly="state not in ['draft']"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="documents" string="Documents">
+                            <field name="document_ids" readonly="state not in ['draft', 'sent']">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="type_id"/>
+                                    <field name="attachment" widget="binary"/>
+                                    <button name="action_accept" type="object" icon="fa-check" string="Approve Document" invisible="state == 'approved'"/>
+                                    <button name="action_reject" type="object" icon="fa-times" string="Reject Document" invisible="state == 'rejected'"/>
+                                    <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-muted="state == 'new'"/>
+                                </list>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="sequence"/>
+                                            <field name="name"/>
+                                            <field name="type_id"/>
+                                            <field name="attachment" widget="binary"/>
+                                            <field name="state"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page name="Notes">
+                            <field name="notes" placeholder="Write your notes here" readonly="state not in ['draft', 'sent']"/>
+                        </page>
+                        <page name="Rejection Details" invisible="state != 'rejected'">
+                            <field name="rejection_reason" placeholder="Write rejection reason here"/>
+                        </page>
+                        <page name="Date Log">
+                            <group>
+                                <field name="date_application"/>
+                                <field name="date_approval"/>
+                                <field name="date_rejection"/>
+                                <field name="date_signed"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/><!-- Add Chatter Element to View -->
+            </form>
+        </field>
+    </record>
+    <record id="loan_application_list_view" model="ir.ui.view">
+        <field name="name">loan.application.list.view</field>
+        <field name="model">loan.application</field>
+        <field name="arch" type="xml">
+            <list multi_edit="1">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="sale_order_id" optional="hide"/>
+                <field name="user_id"/>
+                <field name="product_id" optional="hide"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-info="state == 'draft'" decoration-warning="state == 'review'" decoration-danger="state == 'rejected'"/>
+                <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="interest_rate" widget="percentage"/>
+                <field name="loan_term"/>
+                <field name="date_application"/>
+                <field name="date_approval" optional="hide"/>
+                <field name="date_rejection" optional="hide"/>
+                <field name="date_signed" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+    <record id="loan_application_search_view" model="ir.ui.view">
+        <field name="name">loan.application.search.view</field>
+        <field name="model">loan.application</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="sale_order_id"/>
+                <field name="user_id"/>
+                <field name="product_id"/>
+                <field name="tag_ids"/>
+                <filter name="filter_state_new" string="New" domain="[('state','=','draft')]"/>
+                <filter name="filter_state_approved" string="Offer Approved" domain="[('state','=','approved')]"/>
+                <filter name="filter_date_application" date="date_application" string="Application Date"/>
+                <filter name="groupby_date_application" string="Application Date" context="{'group_by': 'date_application'}"/> 
+                <filter name="groupby_state" string="State" context="{'group_by': 'state'}"/>
+                <filter name="groupby_partner" string="Customer" context="{'group_by': 'partner_id'}"/>
+                <filter name="groupby_user" string="Salesperson" context="{'group_by': 'user_id'}"/>
+                <filter name="groupby_product" string="Product" context="{'group_by': 'product_id'}"/>
+                <filter name="groupby_tags" string="Tags" context="{'group_by': 'tag_ids'}"/>
+            </search>
+        </field>
+    </record>
+</odoo>
